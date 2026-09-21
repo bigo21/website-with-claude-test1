@@ -1,0 +1,99 @@
+/* ------------------------------------------------------------------
+   Système de design — trois teintes, rien de plus.
+   Toutes les nuances intermédiaires sont dérivées de ces trois valeurs
+   par color-mix : aucune quatrième couleur n'entre dans la page.
+   ------------------------------------------------------------------ */
+
+:root {
+  /* 1. Encre — le fond, quasi noir, légèrement bleuté (terminal). */
+  --ink: #0a0e14;
+  /* 2. Papier — le texte. */
+  --paper: #e6edf3;
+  /* 3. Phosphore — l'accent unique, vert curseur de terminal. */
+  --acc: #3df5a5;
+
+  /* Dérivés d'encre : les élévations de surface. */
+  --ink-raise: color-mix(in oklab, var(--ink) 92%, var(--paper));
+  --ink-deep: color-mix(in oklab, var(--ink) 60%, black);
+
+  /* Dérivés de papier : la hiérarchie de lecture.
+     Mesurés sur le rendu : --text-2 à 7.1:1 et --text-3 à 4.9:1 sur
+     --ink, soit au-dessus du seuil de 4.5:1 pour du texte courant. */
+  --text-1: var(--paper);
+  --text-2: color-mix(in oklab, var(--paper) 68%, var(--ink));
+  --text-3: color-mix(in oklab, var(--paper) 57%, var(--ink));
+
+  /* Traits : jamais une couleur, toujours du papier dilué. */
+  --rule: color-mix(in oklab, var(--paper) 12%, transparent);
+  --rule-strong: color-mix(in oklab, var(--paper) 22%, transparent);
+
+  /* Dérivés d'accent. */
+  --acc-dim: color-mix(in oklab, var(--acc) 72%, var(--ink));
+  --acc-wash: color-mix(in oklab, var(--acc) 12%, transparent);
+  --acc-glow: color-mix(in oklab, var(--acc) 26%, transparent);
+
+  /* Typographie */
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Échelle fluide. Le display plafonne à 6rem. */
+  --t-display: clamp(2.75rem, 1.2rem + 7vw, 6rem);
+  --t-h2: clamp(1.75rem, 1.1rem + 2.6vw, 3rem);
+  --t-h3: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  --t-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --t-small: 0.8125rem;
+  --t-micro: 0.6875rem;
+
+  /* Rythme vertical et gouttières. */
+  --gutter: clamp(1.25rem, 4vw, 5rem);
+  --measure: 68ch;
+  --section-y: clamp(6rem, 12vh, 11rem);
+
+  /* Mouvement : une seule courbe d'attaque pour toute la page. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ------------------------------------------------------------------
+   Surfaces que le navigateur dessine à notre place. Elles appartiennent
+   au design system, pas aux valeurs par défaut du navigateur.
+   ------------------------------------------------------------------ */
+
+::selection {
+  background: var(--acc);
+  color: var(--ink);
+}
+
+:root {
+  color-scheme: dark;
+  scrollbar-color: var(--rule-strong) transparent;
+  scrollbar-width: thin;
+  accent-color: var(--acc);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--acc-dim);
+}
+
+:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+input,
+textarea {
+  caret-color: var(--acc);
+}

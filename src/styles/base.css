@@ -1,0 +1,223 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text-1);
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+blockquote,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Les chiffres de données restent alignés en colonne. */
+time,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+
+.shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+  /* La barre fixe mesure 60px : les ancres s'arrêtent en dessous. */
+  scroll-margin-top: 60px;
+}
+
+/* Titre de section : un prompt de terminal qui sert réellement de repère
+   de navigation, pas un ornement. */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.25rem;
+}
+
+.section-head__prompt {
+  font-family: var(--mono);
+  font-size: clamp(1.1rem, 0.85rem + 1vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--acc);
+  flex: none;
+  translate: 0 -0.05em;
+}
+
+.section-head__title {
+  font-family: var(--mono);
+  font-size: var(--t-h2);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-1);
+  text-wrap: balance;
+}
+
+.section-head__meta {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  flex: none;
+  align-self: flex-end;
+}
+
+.prose {
+  max-width: var(--measure);
+  color: var(--text-2);
+}
+
+.prose + .prose {
+  margin-top: 1.5rem;
+}
+
+/* Le curseur de bloc, réutilisé partout où une ligne « vit ». */
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.14em;
+  translate: 0 0.16em;
+  background: var(--acc);
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Réglure de fond partagée : la grille d'ingénieur sous toute la page. */
+.grid-rule {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: linear-gradient(
+      to right,
+      var(--rule) 1px,
+      transparent 1px
+    );
+  background-size: calc(100% / 6) 100%;
+  opacity: 0.35;
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+}
+
+@media (max-width: 760px) {
+  .grid-rule {
+    background-size: calc(100% / 3) 100%;
+  }
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .caret {
+    opacity: 1;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 100;
+  background: var(--acc);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  padding: 0.6rem 1rem;
+  transition: top 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
+}

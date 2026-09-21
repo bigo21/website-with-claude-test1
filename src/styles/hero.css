@@ -1,0 +1,294 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-block: 7rem 4.5rem;
+  isolation: isolate;
+}
+
+/* Le canevas génératif vit derrière tout, et s'efface vers le bas pour
+   que le texte ne lutte jamais contre lui. */
+.circuit {
+  position: absolute;
+  inset: -12% -5% 0;
+  z-index: -1;
+  /* Deux masques composés : la nappe s'éteint vers les bords, puis une
+     seconde passe creuse la colonne de gauche où vivent le nom, la
+     signature et les boutons. */
+  mask-image:
+    radial-gradient(
+      115% 80% at 62% 34%,
+      black 12%,
+      color-mix(in oklab, black 60%, transparent) 48%,
+      transparent 78%
+    ),
+    linear-gradient(
+      to right,
+      transparent 0%,
+      color-mix(in oklab, black 35%, transparent) 34%,
+      black 62%
+    );
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+@media (max-width: 760px) {
+  .circuit {
+    mask-image: radial-gradient(
+      130% 55% at 50% 18%,
+      color-mix(in oklab, black 80%, transparent) 10%,
+      transparent 72%
+    );
+    mask-composite: add;
+    -webkit-mask-composite: source-over;
+  }
+}
+
+.circuit canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero__name {
+  font-family: var(--mono);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+  color: var(--text-1);
+  display: flex;
+  flex-direction: column;
+}
+
+.hero__name-line {
+  display: block;
+  will-change: clip-path, transform;
+}
+
+/* Le prénom passe en clair : la hiérarchie se fait par le poids et la
+   valeur, jamais par un dégradé. */
+.hero__name-line--given {
+  font-weight: 400;
+  color: var(--text-3);
+  padding-left: 0.08em;
+}
+
+.hero__role {
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  font-family: var(--sans);
+  font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.25rem);
+  font-weight: 400;
+  color: var(--text-2);
+  letter-spacing: 0.005em;
+}
+
+.hero__sep {
+  color: var(--acc);
+  margin-inline: 0.75em;
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
+.hero__pitch {
+  margin-top: 1.5rem;
+  max-width: 58ch;
+  font-family: var(--mono);
+  font-size: clamp(0.8125rem, 0.75rem + 0.28vw, 0.9375rem);
+  line-height: 1.75;
+  color: var(--text-3);
+  min-height: 3.4em;
+}
+
+.hero__prompt {
+  color: var(--acc);
+  margin-right: 0.7em;
+  font-weight: 500;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* ---------------- Boutons ---------------- */
+
+.btn {
+  --btn-fg: var(--text-1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  letter-spacing: -0.01em;
+  color: var(--btn-fg);
+  padding: 0.85rem 1.3rem;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out);
+}
+
+/* Le remplissage monte depuis le bas : un seul geste, pas un halo. */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--acc);
+  transform-origin: bottom;
+  scale: 1 0;
+  transition: scale 0.45s var(--ease-out);
+  z-index: -1;
+}
+
+.btn--solid {
+  --btn-fg: var(--ink);
+  background: var(--acc);
+  border-color: var(--acc);
+}
+
+.btn--solid::before {
+  background: transparent;
+}
+
+.btn--solid:hover {
+  background: color-mix(in oklab, var(--acc) 82%, var(--paper));
+  border-color: color-mix(in oklab, var(--acc) 82%, var(--paper));
+}
+
+.btn--ghost {
+  isolation: isolate;
+}
+
+.btn--ghost:hover {
+  color: var(--ink);
+  border-color: var(--acc);
+}
+
+.btn--ghost:hover::before {
+  scale: 1 1;
+}
+
+.btn:active {
+  translate: 0 1px;
+}
+
+.btn__icon {
+  width: 15px;
+  height: 15px;
+  transition: translate 0.35s var(--ease-out);
+}
+
+.btn--solid:hover .btn__icon {
+  translate: 0 2px;
+}
+
+.btn--ghost:hover .btn__icon {
+  translate: 2px -2px;
+}
+
+/* ---------------- Rail bas de hero ---------------- */
+
+.hero__rail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 2.5rem;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.hero__social {
+  display: flex;
+  gap: 1.1rem;
+}
+
+.hero__social a {
+  color: var(--text-3);
+  transition: color 0.3s var(--ease-out), translate 0.3s var(--ease-out);
+}
+
+.hero__social a:hover {
+  color: var(--acc);
+  translate: 0 -2px;
+}
+
+.hero__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.hero__cue.is-ready {
+  opacity: 1;
+}
+
+.hero__cue-track {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 34px;
+  background: var(--rule-strong);
+  overflow: hidden;
+}
+
+.hero__cue-dot {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 12px;
+  background: var(--acc);
+  animation: cue-fall 2.1s var(--ease-io) infinite;
+}
+
+@keyframes cue-fall {
+  0% {
+    translate: 0 -14px;
+  }
+  60%,
+  100% {
+    translate: 0 36px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .btn {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero__rail {
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+  }
+  .hero__cue {
+    display: none;
+  }
+}
